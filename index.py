@@ -87,16 +87,18 @@ def rank_stocks(data):
   print(stock_performance)
 
   ranked_stocks = sorted(stock_performance, key=stock_performance.get, reverse=True)
-  return ranked_stocks
+  ranked_performance = sorted(stock_performance.values(), reverse=True)
+
+  return ranked_stocks, ranked_performance
 
 def selectWinningStock(weekno, num_winners):
   global data
   global state
-  
+
   if state == False:
     return "競賽尚未開始！"
-  
-  ranked_stocks = rank_stocks(data)
+
+  ranked_stocks,ranked_performance = rank_stocks(data)
   winning_stocks = ranked_stocks[:num_winners]
 
   message = ""
@@ -111,6 +113,6 @@ def selectWinningStock(weekno, num_winners):
             if stock == value_to_find:
               message += str(key[0])+"、"
     message = message[:-1]
-    message += "的"+str(winning_stocks[i])
+    message += "的"+str(winning_stocks[i])+"（成長率為"+str(round(ranked_performance[i]*100,2))+"%）"
     message += "\n"
   return message
